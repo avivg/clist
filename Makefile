@@ -1,6 +1,6 @@
 CFLAGS = -Wall -g -pedantic
 
-CLIST_HDRS_DIR = clist/include
+CLIST_HDRS_DIR = clistlib/include
 CLIST_SRC_DIR = clistlib/src
 CLIST_OBJ_DIR = clistlib/obj
 
@@ -26,7 +26,7 @@ TEST_INCLUDES = -I$(TEST_LIB_DIR)
 all: run_tests
 
 run_tests: $(TEST_EXE)
-	$(TEST_EXE) -v -c
+	$(TEST_EXE)
 
 $(TEST_EXE): $(TEST_OBJS) $(CLIST_OBJS) $(CLIST_HDRS)
 	@mkdir -p $(@D)

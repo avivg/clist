@@ -1,14 +1,12 @@
-#include <minunit.h>
+#include <stdlib.h>
 
-MU_TEST(test_check) {
-	mu_check(5 == 7);
-}
-MU_TEST_SUITE(test_suite) {
-	MU_RUN_TEST(test_check);
-}
+extern void test_acceptance_suite_runner(void);
+extern void test_clist_util_suite_runner(void);
 
-int main(int argc, char *argv[]) {
-	MU_RUN_SUITE(test_suite);
-	MU_REPORT();
-	return minunit_status;
+int main() {
+
+    test_acceptance_suite_runner();
+    test_clist_util_suite_runner();
+
+    return EXIT_SUCCESS;
 }
