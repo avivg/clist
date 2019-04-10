@@ -52,11 +52,77 @@ MU_TEST(test_clist_add_top)
     mu_assert_string_eq("TestString", elem_get_p->str);
 }
 
+MU_TEST(test_clist_add_multiple)
+{
+    test_struct_t *elem_p = NULL;
+    test_struct_t *elem_get_p = NULL;
+
+    /* Given */
+    tested_clist = clist_create(sizeof(test_struct_t));
+    elem_p = clist_add_top(tested_clist);
+    elem_p->str = "Elem1";
+    elem_p = clist_add_top(tested_clist);
+    elem_p->str = "Elem2";
+    /* When */
+    elem_get_p = clist_get_top(tested_clist);
+    /* Check */
+    mu_check(elem_get_p != NULL);
+    mu_assert_string_eq("Elem2", elem_get_p->str);
+
+    /* And when */
+    elem_get_p = clist_get_next(tested_clist, elem_get_p);
+    /* Check */
+    mu_check(elem_get_p != NULL);
+    mu_assert_string_eq("Elem1", elem_get_p->str);
+
+}
+
+MU_TEST(test_clist_remove_top)
+{
+    test_struct_t *elem_p = NULL;
+    test_struct_t *elem_get_p = NULL;
+
+    /* Given */
+    tested_clist = clist_create(sizeof(test_struct_t));
+    elem_p = clist_add_top(tested_clist);
+    elem_p->str = "Elem1";
+    elem_p = clist_add_top(tested_clist);
+    elem_p->str = "Elem2";
+    /* When */
+    clist_remove(tested_clist, elem_p);
+    /* Check */
+    elem_get_p = clist_get_top(tested_clist);
+    mu_check(elem_get_p != NULL);
+    mu_assert_string_eq("Elem1", elem_get_p->str);
+}
+
+MU_TEST(test_clist_remove_middle)
+{
+    test_struct_t *elem_1 = NULL;
+    test_struct_t *elem_2 = NULL;
+    test_struct_t *elem_get_p = NULL;
+
+    /* Given */
+    tested_clist = clist_create(sizeof(test_struct_t));
+    elem_1 = clist_add_top(tested_clist);
+    elem_2 = clist_add_top(tested_clist);
+    elem_2->str = "Elem2";
+    /* When */
+    clist_remove(tested_clist, elem_1);
+    /* Check */
+    elem_get_p = clist_get_top(tested_clist);
+    mu_check(elem_get_p != NULL);
+    mu_assert_string_eq("Elem2", elem_get_p->str);
+}
+
 MU_TEST_SUITE(test_suite)
 {
     MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
 	MU_RUN_TEST(test_clist_create);
 	MU_RUN_TEST(test_clist_add_top);
+    MU_RUN_TEST(test_clist_add_multiple);
+    MU_RUN_TEST(test_clist_remove_top);
+    MU_RUN_TEST(test_clist_remove_middle);
 }
 
 void test_acceptance_suite_runner(void)
