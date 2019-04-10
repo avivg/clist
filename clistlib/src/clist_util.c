@@ -2,7 +2,12 @@
 
 void* clu_alloc(size_t size)
 {
-    return malloc(size);
+    void *blob = malloc(size);
+    if (blob)
+    {
+        clu_memset(blob, 0, size);
+    }
+    return blob;
 }
 
 void clu_free(void *buf)
@@ -12,7 +17,7 @@ void clu_free(void *buf)
 
 void clu_memset(void *buf, char val, size_t size)
 {
-    char *cp = buf;
+    char *cp = (char*)buf;
     while(size--)
     {
         *cp++ = val;
