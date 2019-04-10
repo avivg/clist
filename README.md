@@ -42,6 +42,8 @@ Will result with:
 To run the test suite, 'git submodule init' and 'git submodule update',
 
 ## TODO
+* Add add_tail, get_tail (maybe rename apis to 'first' and 'last')
 * Add library build
 * Allow custom element destruction callback
 * Iteration macro
+* Consider turning into doubly linked list and add reverse iteration
