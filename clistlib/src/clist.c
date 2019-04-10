@@ -1,5 +1,6 @@
 #include <clist.h>
 #include <internal/clist_util.h>
+#include <internal/clist_intern.h>
 
 void clist_free(clist_t clist)
 {
@@ -23,11 +24,6 @@ clist_t clist_create(size_t element_size)
 }
 
 
-typedef struct
-{
-    clist_element_handle_t *next;
-} clist_element_tag_t;
-
 clist_element_handle_t clist_add_top(clist_t lst)
 {
     size_t full_element_size = lst->elem_size + sizeof(clist_element_tag_t);
@@ -49,18 +45,6 @@ clist_element_handle_t clist_get_next(clist_t lst, clist_element_handle_t elemen
     return elem_tag->next;
 }
 
-void clist_remove_first(clist_t lst)
-{
-    clist_element_tag_t *elem_tag = lst->head - sizeof(clist_element_tag_t);
-    lst->head = elem_tag->next;
-    clu_free(elem_tag);
-}
-
-void clist_remove_middle(clist_t lst, clist_element_handle_t element)
-{
-    
-}
-
 void clist_remove(clist_t lst, clist_element_handle_t element)
 {
     if (element == lst->head)
@@ -70,6 +54,30 @@ void clist_remove(clist_t lst, clist_element_handle_t element)
     else
     {
         clist_remove_middle(lst, element);
+    }
+}
+
+void clist_remove_first(clist_t lst)
+{
+    clist_element_tag_t *elem_tag = lst->head - sizeof(clist_element_tag_t);
+    lst->head = elem_tag->next;
+    clu_free(elem_tag);
+}
+
+void clist_remove_middle(clist_t lst, clist_element_handle_t element)
+{
+    clist_element_handle_t prev = lst->head;
+    clist_element_tag_t *prev_tag = prev - sizeof(clist_element_tag_t);
+    while (prev && prev_tag->next != element)
+    {
+        prev = clist_get_next(lst, prev);
+        prev_tag = prev - sizeof(clist_element_tag_t);
+    }
+    if (prev)
+    {
+        clist_element_tag_t *elem_tag = element - sizeof(clist_element_tag_t);
+        prev_tag->next = elem_tag->next;
+        clu_free(elem_tag);
     }
 }
 

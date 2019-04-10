@@ -96,7 +96,7 @@ MU_TEST(test_clist_remove_top)
     mu_assert_string_eq("Elem1", elem_get_p->str);
 }
 
-MU_TEST(test_clist_remove_middle)
+MU_TEST(test_clist_remove_tail)
 {
     test_struct_t *elem_1 = NULL;
     test_struct_t *elem_2 = NULL;
@@ -112,7 +112,28 @@ MU_TEST(test_clist_remove_middle)
     /* Check */
     elem_get_p = clist_get_top(tested_clist);
     mu_check(elem_get_p != NULL);
+    mu_check(clist_get_next(tested_clist, elem_get_p) == NULL);
     mu_assert_string_eq("Elem2", elem_get_p->str);
+}
+
+MU_TEST(test_clist_remove_middle)
+{
+    test_struct_t *elem_1 = NULL;
+    test_struct_t *elem_2 = NULL;
+    test_struct_t *elem_3 = NULL;
+    test_struct_t *elem_get_p = NULL;
+
+    /* Given */
+    tested_clist = clist_create(sizeof(test_struct_t));
+    elem_1 = clist_add_top(tested_clist);
+    elem_2 = clist_add_top(tested_clist);
+    elem_3 = clist_add_top(tested_clist);
+    /* When */
+    clist_remove(tested_clist, elem_2);
+    /* Check */
+    elem_get_p = clist_get_top(tested_clist);
+    mu_check(elem_get_p == elem_3);
+    mu_check(clist_get_next(tested_clist, elem_get_p) == elem_1);
 }
 
 MU_TEST_SUITE(test_suite)
@@ -122,6 +143,7 @@ MU_TEST_SUITE(test_suite)
 	MU_RUN_TEST(test_clist_add_top);
     MU_RUN_TEST(test_clist_add_multiple);
     MU_RUN_TEST(test_clist_remove_top);
+    MU_RUN_TEST(test_clist_remove_tail);
     MU_RUN_TEST(test_clist_remove_middle);
 }
 
