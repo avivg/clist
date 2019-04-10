@@ -33,7 +33,10 @@
         clist_free(lst);
     }
 
-    
 ## Running the tests
 To run the test suite, 'git submodule init' and 'git submodule update',
 
+## TODO
+* Add library build
+* Allow custom element destruction callback
+* Iteration macro
