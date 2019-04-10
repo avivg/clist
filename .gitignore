@@ -1,5 +1,6 @@
 # Project specific ignores
 test/bin/
+example/example
 
 # Prerequisites
 *.d
