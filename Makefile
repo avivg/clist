@@ -26,7 +26,7 @@ TEST_INCLUDES = -I$(TEST_LIB_DIR)
 all: run_tests
 
 run_tests: $(TEST_EXE)
-	$(TEST_EXE)
+	@valgrind -v $(TEST_EXE)
 
 $(TEST_EXE): $(TEST_OBJS) $(CLIST_OBJS) $(CLIST_HDRS)
 	@mkdir -p $(@D)

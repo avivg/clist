@@ -14,6 +14,7 @@ void test_teardown()
     if (tested_clist)
     {
         clist_free(tested_clist);
+        tested_clist = NULL;
     }
 }
 
@@ -34,10 +35,28 @@ MU_TEST(test_clist_create)
     mu_check(tested_clist != NULL);
 }
 
+MU_TEST(test_clist_add_top)
+{
+    test_struct_t *elem_p = NULL;
+    test_struct_t *elem_get_p = NULL;
+
+    /* Given */
+    tested_clist = clist_create(sizeof(test_struct_t));
+    /* When */
+    elem_p = clist_add_top(tested_clist);
+    elem_p->str = "TestString";
+    elem_get_p = clist_get_top(tested_clist);
+    /* Check */
+    mu_check(elem_p != NULL);
+    mu_check(elem_get_p == elem_p);
+    mu_assert_string_eq("TestString", elem_get_p->str);
+}
+
 MU_TEST_SUITE(test_suite)
 {
     MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
 	MU_RUN_TEST(test_clist_create);
+	MU_RUN_TEST(test_clist_add_top);
 }
 
 void test_acceptance_suite_runner(void)
