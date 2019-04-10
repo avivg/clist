@@ -14,6 +14,9 @@ void clist_free(clist_t);
 /* Allocates and adds an element as the first in the list */
 clist_element_handle_t clist_add_top(clist_t);
 
+/* Allocates and adds and element after 'prev' */
+clist_element_handle_t clist_add_after(clist_t, clist_element_handle_t prev);
+
 /* Return the first element in the list */
 clist_element_handle_t clist_get_top(clist_t);
 

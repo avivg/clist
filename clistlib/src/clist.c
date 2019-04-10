@@ -30,6 +30,15 @@ clist_element_handle_t clist_add_top(clist_t lst)
     return new_element;
 }
 
+clist_element_handle_t clist_add_after(clist_t lst, clist_element_handle_t prev)
+{
+    clist_element_handle_t new_element = clist_element_create(lst);
+    ELEMENT_NEXT(new_element) = ELEMENT_NEXT(prev);
+    ELEMENT_NEXT(prev) = new_element;
+    return new_element;
+}
+
+
 clist_element_handle_t clist_element_create(clist_t lst)
 {
     size_t full_element_size = lst->elem_size + TAG_SIZE;

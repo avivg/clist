@@ -20,9 +20,9 @@ void test_teardown()
 
 typedef struct
 {
-    int a;
-    int b;
+    char a;
     char *str;
+    int b;
 } test_struct_t;
 
 MU_TEST(test_clist_create)
@@ -75,6 +75,41 @@ MU_TEST(test_clist_add_multiple)
     mu_check(elem_get_p != NULL);
     mu_assert_string_eq("Elem1", elem_get_p->str);
 
+}
+
+MU_TEST(test_clist_add_after)
+{
+    test_struct_t  *elem_1 = NULL,
+                    *elem_2 = NULL,
+                    *elem_added = NULL;
+    test_struct_t *elem_p = NULL;
+
+    /* Given */
+    tested_clist = clist_create(sizeof(test_struct_t));
+    elem_1 = clist_add_top(tested_clist);
+    elem_1->str = "E1";
+    elem_2 = clist_add_top(tested_clist);
+    elem_2->str = "E2";
+
+    /* When */
+    elem_added = clist_add_after(tested_clist, elem_2);
+    elem_added->str = "Between 2 and 1";
+
+    /* Check */
+    elem_p = clist_get_next(tested_clist, elem_2);
+    mu_check(elem_p == elem_added);
+    mu_assert_string_eq("Between 2 and 1", elem_p->str);
+    mu_check(clist_get_next(tested_clist, elem_p) == elem_1);
+
+    /* And when */
+    elem_added = clist_add_after(tested_clist, elem_1);
+    elem_added->str = "After 1";
+
+    /* Check */
+    elem_p = clist_get_next(tested_clist, elem_1);
+    mu_check(elem_p == elem_added);
+    mu_assert_string_eq("After 1", elem_p->str);
+    mu_check(clist_get_next(tested_clist, elem_p) == NULL);
 }
 
 MU_TEST(test_clist_remove_top)
@@ -142,6 +177,7 @@ MU_TEST_SUITE(test_suite)
 	MU_RUN_TEST(test_clist_create);
 	MU_RUN_TEST(test_clist_add_top);
     MU_RUN_TEST(test_clist_add_multiple);
+    MU_RUN_TEST(test_clist_add_after);
     MU_RUN_TEST(test_clist_remove_top);
     MU_RUN_TEST(test_clist_remove_tail);
     MU_RUN_TEST(test_clist_remove_middle);
