@@ -11,7 +11,8 @@ clist_t clist_create(size_t s);
 /* Frees a list */
 void clist_free(clist_t);
 
-/* Allocates and adds an element as the first in the list */
+/* Allocates and adds an element as the first in the list.
+   Returns the newly allocated element. */
 clist_element_handle_t clist_add_top(clist_t);
 
 /* Allocates and adds and element after 'prev' */
