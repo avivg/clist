@@ -33,6 +33,11 @@
         clist_free(lst);
     }
 
+Will result with:
+
+    x: 100, y: 200
+    x: 300, y: 400
+
 ## Running the tests
 To run the test suite, 'git submodule init' and 'git submodule update',
 
