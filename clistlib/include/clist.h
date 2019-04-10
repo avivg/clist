@@ -5,7 +5,7 @@
 
 struct clist_s
 {
-
+    
 };
 
 typedef struct clist_s * clist_t;

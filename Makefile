@@ -30,17 +30,17 @@ run_tests: $(TEST_EXE)
 
 $(TEST_EXE): $(TEST_OBJS) $(CLIST_OBJS) $(CLIST_HDRS)
 	@mkdir -p $(@D)
-	$(CXX)  -o $@  $(TEST_OBJS)  $(CLIST_OBJS)  $(CFLAGS)
+	$(CC)  -o $@  $(TEST_OBJS)  $(CLIST_OBJS)  $(CFLAGS)
 
 $(TEST_BUILD_DIR)/%.o: $(TEST_SRC_DIR)/%.c $(CLIST_HDRS)
 	@echo $@
 	@mkdir -p $(dir $@)
-	$(CXX)  -o $@  -c $<  $(CFLAGS)  $(CLIST_INCLUDE)  $(TEST_INCLUDES)
+	$(CC)  -o $@  -c $<  $(CFLAGS)  $(CLIST_INCLUDE)  $(TEST_INCLUDES)
 
 $(CLIST_OBJ_DIR)/%.o: $(CLIST_SRC_DIR)/%.c $(CLIST_HDRS)
 	@echo $@
 	@mkdir -p $(dir $@)
-	$(CXX)  -o $@  -c $<  $(CFLAGS)  $(CLIST_INCLUDE)  
+	$(CC)  -o $@  -c $<  $(CFLAGS)  $(CLIST_INCLUDE)  
 
 
 clean:
