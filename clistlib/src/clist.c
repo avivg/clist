@@ -2,6 +2,16 @@
 #include <internal/clist_util.h>
 #include <internal/clist_intern.h>
 
+clist_t clist_create(size_t element_size)
+{
+    clist_t new_list = clu_alloc(sizeof(struct clist_s));
+    if (new_list)
+    {
+        new_list->elem_size = element_size;
+    }
+    return new_list;
+}
+
 void clist_free(clist_t clist)
 {
     clist_elem_p elem = clist_get_first(clist);
@@ -14,20 +24,40 @@ void clist_free(clist_t clist)
     clu_free(clist);
 }
 
-clist_t clist_create(size_t element_size)
-{
-    clist_t new_list = clu_alloc(sizeof(struct clist_s));
-    new_list->elem_size = element_size;
-    return new_list;
-}
-
 
 clist_elem_p clist_add_first(clist_t lst)
 {
-    clist_elem_p new_element = clist_element_create(lst);
-    ELEMENT_NEXT(new_element) = lst->head;
-    lst->head = new_element;
-    return new_element;
+    if (lst)
+    {
+        clist_elem_p new_element = clist_element_create(lst);
+        if (new_element)
+        {
+            ELEMENT_NEXT(new_element) = lst->head;
+            lst->head = new_element;
+            return new_element;
+        }
+    }
+    return NULL;
+}
+
+clist_elem_p clist_add_last(clist_t lst)
+{
+    if (lst)
+    {
+        clist_elem_p prev = clist_get_first(lst);
+        if (prev)
+        {
+            for (/* empty */;
+                 clist_get_next(lst, prev);
+                 prev = clist_get_next(lst, prev));
+            return clist_add_after(lst, prev);
+        }
+        else
+        {
+            return clist_add_first(lst);
+        }
+    }
+    return NULL;
 }
 
 clist_elem_p clist_add_after(clist_t lst, clist_elem_p prev)
@@ -49,6 +79,19 @@ clist_elem_p clist_element_create(clist_t lst)
 clist_elem_p clist_get_first(clist_t lst)
 {
     return lst->head;
+}
+
+clist_elem_p clist_get_last(clist_t lst)
+{
+    if (lst)
+    {
+        clist_elem_p prev = clist_get_first(lst);
+        for (/* empty */;
+                clist_get_next(lst, prev);
+                prev = clist_get_next(lst, prev));
+        return prev;
+    }
+    return NULL;
 }
 
 clist_elem_p clist_get_next(clist_t lst, clist_elem_p element)
