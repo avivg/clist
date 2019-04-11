@@ -1,5 +1,5 @@
 language: c
+before_install:
+  - sudo apt-get install -y valgrind
 script:
-  - git submodule init
   - make vg
-  
