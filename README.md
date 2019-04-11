@@ -1,4 +1,4 @@
-![alt text][ci_status]
+[![Build Status](https://travis-ci.org/avivg/clist.svg?branch=master)](https://travis-ci.org/avivg/clist)
 # clist
 > Linked list implementation in C with super simple interface.
 
@@ -49,6 +49,3 @@ To run the test suite, 'git submodule init' and 'git submodule update',
 * Allow custom element destruction callback
 * Iteration macro
 * Try to create test double for malloc/clu_alloc and test allocation error handling
-
-
-[ci_status]: https://travis-ci.org/avivg/clist.svg?branch=master "CI Status (from Travis-CI)"
