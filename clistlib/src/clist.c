@@ -12,16 +12,19 @@ clist_t clist_create(size_t element_size)
     return new_list;
 }
 
-void clist_free(clist_t clist)
+void clist_free(clist_t lst)
 {
-    clist_elem_p elem = clist_get_first(clist);
-    while(elem)
+    if (lst)
     {
-        clist_elem_p next = clist_get_next(clist, elem);
-        clist_remove(clist, elem);
-        elem = next;
+        clist_elem_p elem = clist_get_first(lst);
+        while(elem)
+        {
+            clist_elem_p next = clist_get_next(lst, elem);
+            clist_remove(lst, elem);
+            elem = next;
+        }
+        clu_free(lst);
     }
-    clu_free(clist);
 }
 
 
@@ -56,23 +59,35 @@ clist_elem_p clist_add_last(clist_t lst)
 
 clist_elem_p clist_add_after(clist_t lst, clist_elem_p prev)
 {
-    clist_elem_p new_element = clist_element_create(lst);
-    ELEMENT_NEXT(new_element) = ELEMENT_NEXT(prev);
-    ELEMENT_NEXT(prev) = new_element;
-    return new_element;
+    if (lst && prev)
+    {
+        clist_elem_p new_element = clist_element_create(lst);
+        ELEMENT_NEXT(new_element) = ELEMENT_NEXT(prev);
+        ELEMENT_NEXT(prev) = new_element;
+        return new_element;
+    }
+    return NULL;
 }
 
 
 clist_elem_p clist_element_create(clist_t lst)
 {
-    size_t full_element_size = lst->elem_size + TAG_SIZE;
-    clist_element_tag_t *new_elem_tag = clu_alloc(full_element_size);
-    return TAG_ELEMENT(new_elem_tag);
+    if (lst)
+    {
+        size_t full_element_size = lst->elem_size + TAG_SIZE;
+        clist_element_tag_t *new_elem_tag = clu_alloc(full_element_size);
+        return TAG_ELEMENT(new_elem_tag);
+    }
+    return NULL;
 }
 
 clist_elem_p clist_get_first(clist_t lst)
 {
-    return ELEMENT_NEXT(TAG_ELEMENT(&lst->head_sentinel));
+    if (lst)
+    {
+        return ELEMENT_NEXT(TAG_ELEMENT(&lst->head_sentinel));
+    }
+    return NULL;
 }
 
 clist_elem_p clist_get_last(clist_t lst)
@@ -90,7 +105,11 @@ clist_elem_p clist_get_last(clist_t lst)
 
 clist_elem_p clist_get_next(clist_t lst, clist_elem_p element)
 {
-    return ELEMENT_NEXT(element);
+    if (element)
+    {
+        return ELEMENT_NEXT(element);
+    }
+    return NULL;
 }
 
 void clist_remove(clist_t lst, clist_elem_p element)
@@ -115,10 +134,10 @@ void clist_remove_after(clist_t lst, clist_elem_p prev, clist_elem_p element)
     }
 }
 
-void clist_element_free(clist_elem_p elem)
+void clist_element_free(clist_elem_p element)
 {
-    if (elem)
+    if (element)
     {
-        clu_free(ELEMENT_TAG(elem));
+        clu_free(ELEMENT_TAG(element));
     }
 }
