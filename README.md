@@ -1,5 +1,7 @@
 # clist
 
+![alt text][ci_status]
+
 [API](clistlib/include/clist.h)
 
 ## Usage
@@ -47,3 +49,6 @@ To run the test suite, 'git submodule init' and 'git submodule update',
 * Allow custom element destruction callback
 * Iteration macro
 * Try to create test double for malloc/clu_alloc and test allocation error handling
+
+
+[ci_status]: https://travis-ci.org/avivg/clist.svg?branch=master "CI Status (from Travis-CI)"
