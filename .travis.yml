@@ -3,4 +3,5 @@ before_install:
   - sudo apt-get install -y valgrind
 script:
   - make vg
+  - chmod +x ./validate_example.sh
   - ./validate_example.sh
