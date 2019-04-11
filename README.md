@@ -1,6 +1,6 @@
-# clist
-
 ![alt text][ci_status]
+# clist
+> Linked list implementation in C with super simple interface.
 
 [API](clistlib/include/clist.h)
 
