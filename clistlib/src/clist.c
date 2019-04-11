@@ -8,6 +8,8 @@ clist_t clist_create(size_t element_size)
     if (new_list)
     {
         new_list->elem_size = element_size;
+        new_list->head_sentinel.next = LIST_END(new_list);
+        new_list->tail_sentinel.prev = LIST_START(new_list);
     }
     return new_list;
 }
@@ -32,7 +34,7 @@ clist_elem_p clist_add_first(clist_t lst)
 {
     if (lst)
     {
-        return clist_add_after(lst, TAG_ELEMENT(&lst->head_sentinel));
+        return clist_add_after(lst, LIST_START(lst));
     }
     return NULL;
 }
@@ -41,18 +43,7 @@ clist_elem_p clist_add_last(clist_t lst)
 {
     if (lst)
     {
-        clist_elem_p prev = clist_get_first(lst);
-        if (prev)
-        {
-            for (/* empty */;
-                 clist_get_next(lst, prev);
-                 prev = clist_get_next(lst, prev));
-            return clist_add_after(lst, prev);
-        }
-        else
-        {
-            return clist_add_first(lst);
-        }
+        return clist_add_after(lst, ELEMENT_PREV(LIST_END(lst)));
     }
     return NULL;
 }
@@ -62,8 +53,15 @@ clist_elem_p clist_add_after(clist_t lst, clist_elem_p prev)
     if (lst && prev)
     {
         clist_elem_p new_element = clist_element_create(lst);
-        ELEMENT_NEXT(new_element) = ELEMENT_NEXT(prev);
+        clist_elem_p old_next = ELEMENT_NEXT(prev);
+
+        ELEMENT_NEXT(new_element) = old_next;
+        ELEMENT_PREV(new_element) = prev;
+
         ELEMENT_NEXT(prev) = new_element;
+        if (old_next)
+            ELEMENT_PREV(old_next) = new_element;
+        
         return new_element;
     }
     return NULL;
@@ -85,7 +83,9 @@ clist_elem_p clist_get_first(clist_t lst)
 {
     if (lst)
     {
-        return ELEMENT_NEXT(TAG_ELEMENT(&lst->head_sentinel));
+        clist_elem_p first = ELEMENT_NEXT(LIST_START(lst));
+        if (first != LIST_END(lst))
+            return first;
     }
     return NULL;
 }
@@ -94,11 +94,9 @@ clist_elem_p clist_get_last(clist_t lst)
 {
     if (lst)
     {
-        clist_elem_p prev = clist_get_first(lst);
-        for (/* empty */;
-                clist_get_next(lst, prev);
-                prev = clist_get_next(lst, prev));
-        return prev;
+        clist_elem_p last = ELEMENT_PREV(LIST_END(lst));
+        if (last != LIST_START(lst))
+            return last;
     }
     return NULL;
 }
@@ -107,21 +105,18 @@ clist_elem_p clist_get_next(clist_t lst, clist_elem_p element)
 {
     if (element)
     {
-        return ELEMENT_NEXT(element);
+        clist_elem_p next = ELEMENT_NEXT(element);
+        if (next != LIST_END(lst))
+            return next;
     }
     return NULL;
 }
 
 void clist_remove(clist_t lst, clist_elem_p element)
 {
-    if (lst)
+    if (lst && element)
     {
-        clist_elem_p prev = TAG_ELEMENT(&lst->head_sentinel);
-        while (prev && ELEMENT_NEXT(prev) != element)
-        {
-            prev = clist_get_next(lst, prev);
-        }
-        clist_remove_after(lst, prev, element);
+        clist_remove_after(lst, ELEMENT_PREV(element), element);
     }
 }
 
@@ -129,7 +124,9 @@ void clist_remove_after(clist_t lst, clist_elem_p prev, clist_elem_p element)
 {
     if (prev)
     {
-        ELEMENT_NEXT(prev) = ELEMENT_NEXT(element);
+        clist_elem_p new_next = ELEMENT_NEXT(element);
+        ELEMENT_NEXT(prev) = new_next;
+        ELEMENT_PREV(new_next) = prev;
         clist_element_free(element);
     }
 }

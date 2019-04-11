@@ -11,11 +11,13 @@
 typedef struct
 {
     clist_elem_p next;
+    clist_elem_p prev;
 } clist_element_tag_t;
 
 struct clist_s
 {
     clist_element_tag_t head_sentinel;
+    clist_element_tag_t tail_sentinel;
     size_t elem_size;
 };
 
@@ -31,6 +33,10 @@ struct clist_s
 #define TAG_ELEMENT(__tag)      ( (        clist_elem_p)( ((uint8_t*)(__tag )) + TAG_SIZE) )
 
 #define ELEMENT_NEXT(__elem)    (ELEMENT_TAG(__elem)->next)
+#define ELEMENT_PREV(__elem)    (ELEMENT_TAG(__elem)->prev)
+
+#define LIST_START(__lst)        (TAG_ELEMENT(&((__lst)->head_sentinel)))
+#define LIST_END(__lst)          (TAG_ELEMENT(&((__lst)->tail_sentinel)))
 
 /*
  * Internal APIs

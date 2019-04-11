@@ -42,9 +42,8 @@ Will result with:
 To run the test suite, 'git submodule init' and 'git submodule update',
 
 ## TODO
-* Add add_last, get_last
+* Add get_prev
 * Add library build
 * Allow custom element destruction callback
 * Iteration macro
-* Consider turning into doubly linked list and add reverse iteration
 * Try to create test double for malloc/clu_alloc and test allocation error handling

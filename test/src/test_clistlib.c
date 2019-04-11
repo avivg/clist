@@ -123,12 +123,34 @@ MU_TEST(test_clist_add_last)
     /* When */
     elem_p = clist_add_last(tested_clist);
     elem_p->str = "TestString";
+    elem_get_p = clist_get_next(tested_clist,
+                        clist_get_first(tested_clist));
+    /* Check */
+    mu_check(elem_p != NULL);
+    mu_check(elem_get_p == elem_p);
+    mu_assert_string_eq("TestString", elem_get_p->str);
+}
+
+MU_TEST(test_clist_get_last)
+{
+    test_struct_t *elem_p = NULL;
+    test_struct_t *elem_get_p = NULL;
+
+    /* Given */
+    tested_clist = clist_create(sizeof(test_struct_t));
+    elem_p = clist_add_first(tested_clist);
+    elem_p->str = "TestString";
+    clist_add_first(tested_clist);
+    clist_add_first(tested_clist);
+    clist_add_first(tested_clist);
+    /* When */
     elem_get_p = clist_get_last(tested_clist);
     /* Check */
     mu_check(elem_p != NULL);
     mu_check(elem_get_p == elem_p);
     mu_assert_string_eq("TestString", elem_get_p->str);
 }
+
 
 MU_TEST(test_clist_remove_first)
 {
@@ -197,6 +219,7 @@ MU_TEST_SUITE(test_suite)
     MU_RUN_TEST(test_clist_add_multiple);
     MU_RUN_TEST(test_clist_add_after);
     MU_RUN_TEST(test_clist_add_last);
+    MU_RUN_TEST(test_clist_get_last);
     MU_RUN_TEST(test_clist_remove_first);
     MU_RUN_TEST(test_clist_remove_tail);
     MU_RUN_TEST(test_clist_remove_middle);
@@ -204,7 +227,7 @@ MU_TEST_SUITE(test_suite)
 
 void test_clistlib_suite_runner(void)
 {
-    printf("\n\n~~ Acceptance Tests:\n");
+    printf("\n\n~~ CListLib Tests:\n");
     MU_RUN_SUITE(test_suite);
     MU_REPORT();
 }
