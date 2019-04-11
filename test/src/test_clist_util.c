@@ -15,9 +15,10 @@ MU_TEST_SUITE(test_suite)
     MU_RUN_TEST(test_utils_smoke_alloc_free);
 }
 
-void test_clist_util_suite_runner(void)
+int test_clist_util_suite_runner(void)
 {
     printf("\n\n~~ CList Utilities Tests:\n");
     MU_RUN_SUITE(test_suite);
     MU_REPORT();
+    return minunit_fail;
 }

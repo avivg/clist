@@ -29,7 +29,7 @@ run_tests: $(TEST_EXE)
 	$(TEST_EXE)
 
 vg: $(TEST_EXE)
-	valgrind --leak-check=full $(TEST_EXE)
+	valgrind --leak-check=full --error-exitcode=2 $(TEST_EXE)
 
 $(TEST_EXE): $(TEST_OBJS) $(CLIST_OBJS) $(CLIST_HDRS)
 	@mkdir -p $(@D)

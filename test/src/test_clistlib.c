@@ -225,9 +225,10 @@ MU_TEST_SUITE(test_suite)
     MU_RUN_TEST(test_clist_remove_middle);
 }
 
-void test_clistlib_suite_runner(void)
+int test_clistlib_suite_runner(void)
 {
     printf("\n\n~~ CListLib Tests:\n");
     MU_RUN_SUITE(test_suite);
     MU_REPORT();
+    return minunit_fail;
 }
