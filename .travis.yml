@@ -3,5 +3,10 @@ before_install:
   - sudo apt-get install -y valgrind
 script:
   - make vg
-  - chmod +x ./validate_example.sh
-  - ./validate_example.sh
+  # Validate example
+  - make -C example/
+  - example/example > out.txt
+  - fgrep "x: 100, y: 200" out.txt
+  - fgrep "x: 300, y: 400" out.txt
+  - (( `cat out.txt | wc -l` == 3 ))
+
