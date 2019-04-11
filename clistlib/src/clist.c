@@ -29,13 +29,7 @@ clist_elem_p clist_add_first(clist_t lst)
 {
     if (lst)
     {
-        clist_elem_p new_element = clist_element_create(lst);
-        if (new_element)
-        {
-            ELEMENT_NEXT(new_element) = lst->head;
-            lst->head = new_element;
-            return new_element;
-        }
+        return clist_add_after(lst, TAG_ELEMENT(&lst->head_sentinel));
     }
     return NULL;
 }
@@ -78,7 +72,7 @@ clist_elem_p clist_element_create(clist_t lst)
 
 clist_elem_p clist_get_first(clist_t lst)
 {
-    return lst->head;
+    return ELEMENT_NEXT(TAG_ELEMENT(&lst->head_sentinel));
 }
 
 clist_elem_p clist_get_last(clist_t lst)
@@ -101,30 +95,19 @@ clist_elem_p clist_get_next(clist_t lst, clist_elem_p element)
 
 void clist_remove(clist_t lst, clist_elem_p element)
 {
-    if (element == lst->head)
+    if (lst)
     {
-        clist_remove_first(lst);
-    }
-    else
-    {
-        clist_remove_middle(lst, element);
+        clist_elem_p prev = TAG_ELEMENT(&lst->head_sentinel);
+        while (prev && ELEMENT_NEXT(prev) != element)
+        {
+            prev = clist_get_next(lst, prev);
+        }
+        clist_remove_after(lst, prev, element);
     }
 }
 
-void clist_remove_first(clist_t lst)
+void clist_remove_after(clist_t lst, clist_elem_p prev, clist_elem_p element)
 {
-    clist_elem_p old_head = lst->head;
-    lst->head = ELEMENT_NEXT(lst->head);
-    clist_element_free(old_head);
-}
-
-void clist_remove_middle(clist_t lst, clist_elem_p element)
-{
-    clist_elem_p prev = lst->head;
-    while (prev && ELEMENT_NEXT(prev) != element)
-    {
-        prev = clist_get_next(lst, prev);
-    }
     if (prev)
     {
         ELEMENT_NEXT(prev) = ELEMENT_NEXT(element);
