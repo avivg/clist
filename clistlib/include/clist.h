@@ -15,13 +15,13 @@ void clist_free(clist_t);
 
 /* Allocates and adds an element as the first in the list.
    Returns the newly allocated element. */
-clist_elem_p clist_add_top(clist_t);
+clist_elem_p clist_add_first(clist_t);
 
 /* Allocates and adds and element after 'prev' */
 clist_elem_p clist_add_after(clist_t, clist_elem_p prev);
 
 /* Return the first element in the list */
-clist_elem_p clist_get_top(clist_t);
+clist_elem_p clist_get_first(clist_t);
 
 /* Return the next element after 'e' in the list */
 clist_elem_p clist_get_next(clist_t, clist_elem_p e);

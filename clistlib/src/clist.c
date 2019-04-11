@@ -4,7 +4,7 @@
 
 void clist_free(clist_t clist)
 {
-    clist_elem_p elem = clist_get_top(clist);
+    clist_elem_p elem = clist_get_first(clist);
     while(elem)
     {
         clist_elem_p next = clist_get_next(clist, elem);
@@ -22,7 +22,7 @@ clist_t clist_create(size_t element_size)
 }
 
 
-clist_elem_p clist_add_top(clist_t lst)
+clist_elem_p clist_add_first(clist_t lst)
 {
     clist_elem_p new_element = clist_element_create(lst);
     ELEMENT_NEXT(new_element) = lst->head;
@@ -46,7 +46,7 @@ clist_elem_p clist_element_create(clist_t lst)
     return TAG_ELEMENT(new_elem_tag);
 }
 
-clist_elem_p clist_get_top(clist_t lst)
+clist_elem_p clist_get_first(clist_t lst)
 {
     return lst->head;
 }

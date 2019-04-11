@@ -17,7 +17,7 @@
     {
         clist_t lst = clist_create(sizeof(point));
 
-        point *p1 = clist_add_top(lst);
+        point *p1 = clist_add_first(lst);
         p1->x = 100;
         p1->y = 200;
         
@@ -25,7 +25,7 @@
         p2->x = 300;
         p2->y = 400;
 
-        for (point *p = clist_get_top(lst); p; p = clist_get_next(lst, p))
+        for (point *p = clist_get_first(lst); p; p = clist_get_next(lst, p))
         {
             printf("x: %d, y: %d\n", p->x, p->y);
         }
@@ -42,8 +42,9 @@ Will result with:
 To run the test suite, 'git submodule init' and 'git submodule update',
 
 ## TODO
-* Add add_tail, get_tail (maybe rename apis to 'first' and 'last')
+* Add add_last, get_last
 * Add library build
 * Allow custom element destruction callback
 * Iteration macro
 * Consider turning into doubly linked list and add reverse iteration
+* Try to create test double for malloc/clu_alloc and test allocation error handling
