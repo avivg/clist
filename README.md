@@ -45,7 +45,6 @@ To run the test suite, 'git submodule init' and 'git submodule update',
 
 ## TODO
 * Add get_prev
-* Add library build
 * Allow custom element destruction callback
 * Iteration macro
 * Try to create test double for malloc/clu_alloc and test allocation error handling

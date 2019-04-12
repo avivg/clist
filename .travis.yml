@@ -2,7 +2,9 @@ language: c
 before_install:
   - sudo apt-get install -y valgrind
 script:
-  - make vg
+  - make
+  - make test_valg
+  - make clean
   - chmod +x ./validate_example.sh
   - ./validate_example.sh
 
