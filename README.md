@@ -6,11 +6,16 @@
 
 ## Build
 Create a static library under <root>/clistlib/bin:
+
     make
+
 Run the tests (Will pull [minunit](https://github.com/siu/minunit)):
+
     git submodule init
     make test
+
 To run valgrind tests (assuming it's installed and in PATH):
+
     make test_valg
 
 ## Usage
