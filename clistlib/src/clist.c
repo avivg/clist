@@ -112,6 +112,17 @@ clist_elem_p clist_get_next(clist_t lst, clist_elem_p element)
     return NULL;
 }
 
+clist_elem_p clist_get_prev(clist_t lst, clist_elem_p element)
+{
+    if (element)
+    {
+        clist_elem_p prev = ELEMENT_PREV(element);
+        if (prev != LIST_START(lst))
+            return prev;
+    }
+    return NULL;
+}
+
 void clist_remove(clist_t lst, clist_elem_p element)
 {
     if (lst && element)

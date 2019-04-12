@@ -30,8 +30,13 @@ clist_elem_p clist_get_first(clist_t);
 /* Return the last element in the list */
 clist_elem_p clist_get_last(clist_t);
 
-/* Return the next element after 'e' in the list */
+/* Return the next element after 'e' in the list,
+   or NULL if 'e' is the last element */
 clist_elem_p clist_get_next(clist_t, clist_elem_p e);
+
+/* Return the preceding element before 'e' in the list,
+   or NULL if 'e' is the first element */
+clist_elem_p clist_get_prev(clist_t, clist_elem_p e);
 
 /* Remove element 'e' from the list */
 void clist_remove(clist_t, clist_elem_p e);
