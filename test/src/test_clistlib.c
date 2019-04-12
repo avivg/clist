@@ -131,6 +131,35 @@ MU_TEST(test_clist_add_last)
     mu_assert_string_eq("TestString", elem_get_p->str);
 }
 
+MU_TEST(test_clist_get_next)
+{
+    test_struct_t *elem_p = NULL;
+    test_struct_t *elem_get_p = NULL;
+    int idx;
+
+    /* Given */
+    tested_clist = clist_create(sizeof(test_struct_t));
+    elem_p = clist_add_last(tested_clist);
+    elem_p->b = 1;
+    elem_p = clist_add_last(tested_clist);
+    elem_p->b = 2;
+    elem_p = clist_add_last(tested_clist);
+    elem_p->b = 3;
+    elem_p = clist_add_last(tested_clist);
+    elem_p->b = 4;
+    elem_p = clist_add_last(tested_clist);
+    elem_p->b = 5;
+    /* When */
+    elem_get_p = clist_get_first(tested_clist);
+    /* Check */
+    for (idx = 1; idx <= 5; idx++)
+    {
+        mu_check(elem_get_p != NULL);
+        mu_check(elem_get_p->b == idx);
+        elem_get_p = clist_get_next(tested_clist, elem_get_p);
+    }
+}
+
 MU_TEST(test_clist_get_last)
 {
     test_struct_t *elem_p = NULL;
@@ -219,6 +248,7 @@ MU_TEST_SUITE(test_suite)
     MU_RUN_TEST(test_clist_add_multiple);
     MU_RUN_TEST(test_clist_add_after);
     MU_RUN_TEST(test_clist_add_last);
+    MU_RUN_TEST(test_clist_get_next);
     MU_RUN_TEST(test_clist_get_last);
     MU_RUN_TEST(test_clist_remove_first);
     MU_RUN_TEST(test_clist_remove_tail);
