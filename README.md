@@ -58,7 +58,6 @@ Will result with:
 See [example](example/)
 
 ## TODO
-* Add get_prev
 * Allow custom element destruction callback
 * Iteration macro
 * Try to create test double for malloc/clu_alloc and test allocation error handling
