@@ -1,11 +1,11 @@
 [![Build Status](https://travis-ci.org/avivg/clist.svg?branch=master)](https://travis-ci.org/avivg/clist)
 # clist
-> Linked list implementation in C with super simple interface.
+> Double Linked List, ansi-C implementation, with super simple interface.
 
 [API](clistlib/include/clist.h)
 
 ## Build
-Create a static library under <root>/clistlib/bin:
+Create a static library under `./clistlib/bin`:
 
     make
 
