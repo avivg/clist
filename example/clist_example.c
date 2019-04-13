@@ -9,14 +9,14 @@ typedef struct
 
 int main(int ac, char **av)
 {
-    point *p;
+    point *p, *p1, *p2;
     clist_t lst = clist_create(sizeof(point));
 
-    point *p1 = clist_add_first(lst);
+    p1 = clist_add_first(lst);
     p1->x = 100;
     p1->y = 200;
     
-    point *p2 = clist_add_after(lst, p1);
+    p2 = clist_add_after(lst, p1);
     p2->x = 300;
     p2->y = 400;
 
