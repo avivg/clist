@@ -26,6 +26,12 @@ void clist_free(clist_t lst)
     clu_free(lst);
 }
 
+void clist_set_element_destructor(clist_t lst,
+        clist_elem_destructor_cb_t destroy_cb)
+{
+    NULL_CHECK_VOID(lst);
+    lst->elem_destr_cb = destroy_cb;
+}
 
 clist_elem_p clist_add_first(clist_t lst)
 {
@@ -128,6 +134,8 @@ void clist_remove_after(clist_t lst, clist_elem_p prev, clist_elem_p element)
         clist_elem_p new_next = ELEMENT_NEXT(element);
         ELEMENT_NEXT(prev) = new_next;
         ELEMENT_PREV(new_next) = prev;
+        if (lst->elem_destr_cb)
+            lst->elem_destr_cb(element);
         clist_element_free(element);
     }
 }

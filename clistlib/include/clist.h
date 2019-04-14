@@ -5,6 +5,7 @@
 
 typedef struct clist_s * clist_t;
 typedef void * clist_elem_p;
+typedef void (*clist_elem_destructor_cb_t)(clist_elem_p);
 
 /* Allocates a new list for elements with size 's'.
    The size is the user's data size. */
@@ -12,6 +13,14 @@ clist_t clist_create(size_t s);
 
 /* Frees a list (release all the elements) */
 void clist_free(clist_t);
+
+/* Set a custom element destructor to cleanly free user
+   elements. The 'destroy_cb' callback will be called
+   whenever an element is removed from the list or when
+   the list is freed using clist_free, for each remaining
+   element. */
+void clist_set_element_destructor(clist_t,
+        clist_elem_destructor_cb_t destroy_cb);
 
 /* Allocates and adds an element as the first in the list.
    Returns the newly allocated element. */
