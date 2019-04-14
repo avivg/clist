@@ -6,11 +6,8 @@ In this list, the user can ignore the internal management of head, tail, next, p
 
 See [API](clistlib/include/clist.h)
 
-To implement the "classic" linked list, where the user can remove the objects from the list _without releasing them_, simply define the list managed object as a pointer to the user data and dereferece the returned values from the list api.
-See [classic example](example/classic_example.c)
-
 ## Build
-Create a static library under `./clistlib/bin`:
+To create a static library under `./clistlib/bin`:
 
     make
 
@@ -60,8 +57,10 @@ Will result with:
     x: 100, y: 200
     x: 300, y: 400
 
-See [example](example/basic_example.c)
+Updated code available in [basic example](example/basic_example.c)
+
+To implement the "classic" linked list, where the user can remove the objects from the list _without releasing them_, simply define the list managed object as a pointer to the user data and dereferece the returned values from the list api.
+See [classic example](example/classic_example.c)
 
 ## TODO
-* Add example of classic linked list using clist
 * Try to create test double for malloc/clu_alloc and test allocation error handling
