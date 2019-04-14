@@ -2,7 +2,7 @@
 # clist
 > Double Linked List, ansi-C implementation, with super simple interface.
 
-In this list, the user can ignore the internal management of head, tail, next, prev, etc. and consentrate on the data itself. The user only have it's own data structure pointers to deal with and no pesky shims or list constructs needs to be added to it.
+With this list, the user can ignore the internal management of head, tail, next, prev, etc. and consentrate on the data itself. The user only have it's own data structure pointers to deal with and no pesky shims or list constructs needs to be added to it.
 
 See [API](clistlib/include/clist.h)
 
