@@ -5,47 +5,38 @@
 clist_t clist_create(size_t element_size)
 {
     clist_t new_list = clu_alloc(sizeof(struct clist_s));
-    if (new_list)
-    {
-        new_list->elem_size = element_size;
-        new_list->head_sentinel.next = LIST_END(new_list);
-        new_list->tail_sentinel.prev = LIST_START(new_list);
-    }
+    NULL_CHECK(new_list);
+
+    new_list->elem_size = element_size;
+    new_list->head_sentinel.next = LIST_END(new_list);
+    new_list->tail_sentinel.prev = LIST_START(new_list);
     return new_list;
 }
 
 void clist_free(clist_t lst)
 {
-    if (lst)
+    clist_elem_p elem = clist_get_first(lst);
+    while(elem)
     {
-        clist_elem_p elem = clist_get_first(lst);
-        while(elem)
-        {
-            clist_elem_p next = clist_get_next(lst, elem);
-            clist_remove(lst, elem);
-            elem = next;
-        }
-        clu_free(lst);
+        clist_elem_p next = clist_get_next(lst, elem);
+        clist_remove(lst, elem);
+        elem = next;
     }
+    NULL_CHECK_VOID(lst);
+    clu_free(lst);
 }
 
 
 clist_elem_p clist_add_first(clist_t lst)
 {
-    if (lst)
-    {
-        return clist_add_after(lst, LIST_START(lst));
-    }
-    return NULL;
+    NULL_CHECK(lst);
+    return clist_add_after(lst, LIST_START(lst));
 }
 
 clist_elem_p clist_add_last(clist_t lst)
 {
-    if (lst)
-    {
-        return clist_add_after(lst, ELEMENT_PREV(LIST_END(lst)));
-    }
-    return NULL;
+    NULL_CHECK(lst);
+    return clist_add_after(lst, ELEMENT_PREV(LIST_END(lst)));
 }
 
 clist_elem_p clist_add_after(clist_t lst, clist_elem_p prev)
@@ -125,10 +116,9 @@ clist_elem_p clist_get_prev(clist_t lst, clist_elem_p element)
 
 void clist_remove(clist_t lst, clist_elem_p element)
 {
-    if (lst && element)
-    {
-        clist_remove_after(lst, ELEMENT_PREV(element), element);
-    }
+    NULL_CHECK_VOID(lst);
+    NULL_CHECK_VOID(element);
+    clist_remove_after(lst, ELEMENT_PREV(element), element);
 }
 
 void clist_remove_after(clist_t lst, clist_elem_p prev, clist_elem_p element)
@@ -144,8 +134,6 @@ void clist_remove_after(clist_t lst, clist_elem_p prev, clist_elem_p element)
 
 void clist_element_free(clist_elem_p element)
 {
-    if (element)
-    {
-        clu_free(ELEMENT_TAG(element));
-    }
+    NULL_CHECK_VOID(element);
+    clu_free(ELEMENT_TAG(element));
 }

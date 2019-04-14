@@ -38,6 +38,11 @@ struct clist_s
 #define LIST_START(__lst)        (TAG_ELEMENT(&((__lst)->head_sentinel)))
 #define LIST_END(__lst)          (TAG_ELEMENT(&((__lst)->tail_sentinel)))
 
+#define NULL_CHECK(__ptr) \
+        do { if (NULL == (__ptr)) return NULL; } while(0)
+#define NULL_CHECK_VOID(__ptr) \
+        do { if (NULL == (__ptr)) return; } while(0)
+
 /*
  * Internal APIs
  */
