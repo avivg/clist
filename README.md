@@ -59,6 +59,5 @@ See [example](example/)
 
 ## TODO
 * Allow custom element destruction callback
-* Iteration macro
 * Add example of classic linked list using clist
 * Try to create test double for malloc/clu_alloc and test allocation error handling

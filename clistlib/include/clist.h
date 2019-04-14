@@ -41,4 +41,12 @@ clist_elem_p clist_get_prev(clist_t, clist_elem_p e);
 /* Remove element 'e' from the list */
 void clist_remove(clist_t, clist_elem_p e);
 
+/* Macro to perform generic list traversals */
+#define clist_iterate(__lst, __elem_p) \
+            for ((__elem_p) = clist_get_first(__lst); (__elem_p); \
+                    (__elem_p) = clist_get_next((__lst), (__elem_p)))
+#define clist_reverse_iterate(__lst, __elem_p) \
+            for ((__elem_p) = clist_get_last(__lst); (__elem_p); \
+                    (__elem_p) = clist_get_prev((__lst), (__elem_p)))
+
 #endif /* __CLIST_H__ */

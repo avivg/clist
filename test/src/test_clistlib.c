@@ -269,6 +269,44 @@ MU_TEST(test_clist_remove_middle)
     mu_check(clist_get_next(tested_clist, elem_get_p) == elem_1);
 }
 
+MU_TEST(test_clist_iterators)
+{
+    /* Given */
+    test_struct_t *elem = NULL;
+    char check_c;
+    int nof_checks;
+    tested_clist = clist_create(sizeof(test_struct_t));
+    elem = clist_add_last(tested_clist);
+    elem->a = 'A';
+    elem = clist_add_last(tested_clist);
+    elem->a = 'B';
+    elem = clist_add_last(tested_clist);
+    elem->a = 'C';
+    elem = clist_add_last(tested_clist);
+    elem->a = 'D';
+    /* When */
+    /* Check */
+    check_c = 'A';
+    nof_checks = 0;
+    clist_iterate(tested_clist, elem)
+    {
+        mu_check(elem->a == check_c);
+        check_c++;
+        nof_checks++;
+    }
+    mu_check(nof_checks == 4);
+    
+    check_c = 'D';
+    nof_checks = 0;
+    clist_reverse_iterate(tested_clist, elem)
+    {
+        mu_check(elem->a == check_c);
+        check_c--;
+        nof_checks++;
+    }
+    mu_check(nof_checks == 4);
+}
+
 MU_TEST_SUITE(test_suite)
 {
     MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
@@ -283,6 +321,7 @@ MU_TEST_SUITE(test_suite)
     MU_RUN_TEST(test_clist_remove_first);
     MU_RUN_TEST(test_clist_remove_tail);
     MU_RUN_TEST(test_clist_remove_middle);
+    MU_RUN_TEST(test_clist_iterators);
 }
 
 int test_clistlib_suite_runner(void)
