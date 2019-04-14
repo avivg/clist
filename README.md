@@ -2,7 +2,12 @@
 # clist
 > Double Linked List, ansi-C implementation, with super simple interface.
 
-[API](clistlib/include/clist.h)
+In this list, the user can ignore the internal management of head, tail, next, prev, etc. and consentrate on the data itself. The user only have it's own data structure pointers to deal with and no pesky shims or list constructs needs to be added to it.
+
+See [API](clistlib/include/clist.h)
+
+To implement the "classic" linked list, where the user can remove the objects from the list _without releasing them_, simply define the list managed object as a pointer to the user data and dereferece the returned values from the list api.
+See [classic example](example/classic_example.c)
 
 ## Build
 Create a static library under `./clistlib/bin`:
@@ -55,7 +60,7 @@ Will result with:
     x: 100, y: 200
     x: 300, y: 400
 
-See [example](example/)
+See [example](example/basic_example.c)
 
 ## TODO
 * Add example of classic linked list using clist

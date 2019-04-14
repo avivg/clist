@@ -63,3 +63,4 @@ clean:
 	rm -rf $(TEST_BUILD_DIR)
 	rm -rf $(CLIST_OBJ_DIR)
 	rm -rf $(CLIST_BIN_DIR)
+	make -C example clean
