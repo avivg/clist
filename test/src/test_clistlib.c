@@ -271,11 +271,14 @@ MU_TEST(test_clist_remove_middle)
 
 MU_TEST(test_clist_iterators)
 {
-    /* Given */
     test_struct_t *elem = NULL;
     char check_c;
     int nof_checks;
+
+    /* Given */
     tested_clist = clist_create(sizeof(test_struct_t));
+    
+    /* When */
     elem = clist_add_last(tested_clist);
     elem->a = 'A';
     elem = clist_add_last(tested_clist);
@@ -284,7 +287,7 @@ MU_TEST(test_clist_iterators)
     elem->a = 'C';
     elem = clist_add_last(tested_clist);
     elem->a = 'D';
-    /* When */
+    
     /* Check */
     check_c = 'A';
     nof_checks = 0;
@@ -307,6 +310,47 @@ MU_TEST(test_clist_iterators)
     mu_check(nof_checks == 4);
 }
 
+void test_struct_t_destroy(clist_elem_p element)
+{
+    test_struct_t *concrete_elem = element;
+    if (concrete_elem->str)
+        free(concrete_elem->str);
+    concrete_elem->str = NULL;
+}
+
+MU_TEST(test_clist_custom_destructor)
+{
+    test_struct_t *elem;
+    test_struct_t *elem_get;
+    /* Given */
+    tested_clist = clist_create(sizeof(test_struct_t));
+    elem = clist_add_last(tested_clist);
+    elem->str = malloc(100);
+    sprintf(elem->str, "Element1");
+    elem = clist_add_last(tested_clist);
+    elem->str = malloc(10);
+    sprintf(elem->str, "Element2");
+    elem = clist_add_last(tested_clist);
+    elem->str = malloc(200);
+    sprintf(elem->str, "Element3");
+
+    /* When */
+    clist_set_element_destructor(tested_clist, test_struct_t_destroy);
+
+    /* Check */
+    elem_get = clist_get_first(tested_clist);
+    mu_assert_string_eq("Element1", elem_get->str);
+    clist_remove(tested_clist, elem_get);
+    elem_get = clist_get_first(tested_clist);
+    mu_assert_string_eq("Element2", elem_get->str);
+    elem_get = clist_get_next(tested_clist, elem_get);
+    mu_assert_string_eq("Element3", elem_get->str);
+    clist_free(tested_clist); /* Running this test with mem-leak
+                                 framework (like valgrind) will
+                                 detect issues with destructor */
+    tested_clist = NULL;
+}
+
 MU_TEST_SUITE(test_suite)
 {
     MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
@@ -322,6 +366,7 @@ MU_TEST_SUITE(test_suite)
     MU_RUN_TEST(test_clist_remove_tail);
     MU_RUN_TEST(test_clist_remove_middle);
     MU_RUN_TEST(test_clist_iterators);
+    MU_RUN_TEST(test_clist_custom_destructor);
 }
 
 int test_clistlib_suite_runner(void)

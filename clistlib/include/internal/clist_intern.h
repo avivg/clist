@@ -19,6 +19,7 @@ struct clist_s
     clist_element_tag_t head_sentinel;
     clist_element_tag_t tail_sentinel;
     size_t elem_size;
+    clist_elem_destructor_cb_t elem_destr_cb;
 };
 
 
