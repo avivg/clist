@@ -1,15 +1,17 @@
 #include <stdio.h>
+#include <lightunit.h>
 
-#include <minunit.h>
 #include <clist.h>
+
+LU_TEST_SUITE(test_suite_clistlib);
 
 clist_t tested_clist;
 
-void test_setup()
+LU_SUITE_SETUP(test_suite_clistlib)
 {
     tested_clist = NULL;
 }
-void test_teardown()
+LU_SUITE_TEARDOWN(test_suite_clistlib)
 {
     if (tested_clist)
     {
@@ -25,17 +27,17 @@ typedef struct
     int b;
 } test_struct_t;
 
-MU_TEST(test_clist_create)
+LU_TEST(test_suite_clistlib, test_clist_create)
 {
 	/* Given */
     size_t test_size = sizeof(test_struct_t);
     /* When */
     tested_clist = clist_create(test_size);
     /* Check */
-    mu_check(tested_clist != NULL);
+    LU_ASSERT(tested_clist != NULL);
 }
 
-MU_TEST(test_clist_add_first)
+LU_TEST(test_suite_clistlib, test_clist_add_first)
 {
     test_struct_t *elem_p = NULL;
     test_struct_t *elem_get_p = NULL;
@@ -47,12 +49,12 @@ MU_TEST(test_clist_add_first)
     elem_p->str = "TestString";
     elem_get_p = clist_get_first(tested_clist);
     /* Check */
-    mu_check(elem_p != NULL);
-    mu_check(elem_get_p == elem_p);
-    mu_assert_string_eq("TestString", elem_get_p->str);
+    LU_ASSERT(elem_p != NULL);
+    LU_ASSERT(elem_get_p == elem_p);
+    LU_ASSERT_STR_EQ("TestString", elem_get_p->str);
 }
 
-MU_TEST(test_clist_add_multiple)
+LU_TEST(test_suite_clistlib, test_clist_add_multiple)
 {
     test_struct_t *elem_p = NULL;
     test_struct_t *elem_get_p = NULL;
@@ -66,18 +68,18 @@ MU_TEST(test_clist_add_multiple)
     /* When */
     elem_get_p = clist_get_first(tested_clist);
     /* Check */
-    mu_check(elem_get_p != NULL);
-    mu_assert_string_eq("Elem2", elem_get_p->str);
+    LU_ASSERT(elem_get_p != NULL);
+    LU_ASSERT_STR_EQ("Elem2", elem_get_p->str);
 
     /* And when */
     elem_get_p = clist_get_next(tested_clist, elem_get_p);
     /* Check */
-    mu_check(elem_get_p != NULL);
-    mu_assert_string_eq("Elem1", elem_get_p->str);
+    LU_ASSERT(elem_get_p != NULL);
+    LU_ASSERT_STR_EQ("Elem1", elem_get_p->str);
 
 }
 
-MU_TEST(test_clist_add_after)
+LU_TEST(test_suite_clistlib, test_clist_add_after)
 {
     test_struct_t  *elem_1 = NULL,
                     *elem_2 = NULL,
@@ -97,9 +99,9 @@ MU_TEST(test_clist_add_after)
 
     /* Check */
     elem_p = clist_get_next(tested_clist, elem_2);
-    mu_check(elem_p == elem_added);
-    mu_assert_string_eq("Between 2 and 1", elem_p->str);
-    mu_check(clist_get_next(tested_clist, elem_p) == elem_1);
+    LU_ASSERT(elem_p == elem_added);
+    LU_ASSERT_STR_EQ("Between 2 and 1", elem_p->str);
+    LU_ASSERT(clist_get_next(tested_clist, elem_p) == elem_1);
 
     /* And when */
     elem_added = clist_add_after(tested_clist, elem_1);
@@ -107,12 +109,12 @@ MU_TEST(test_clist_add_after)
 
     /* Check */
     elem_p = clist_get_next(tested_clist, elem_1);
-    mu_check(elem_p == elem_added);
-    mu_assert_string_eq("After 1", elem_p->str);
-    mu_check(clist_get_next(tested_clist, elem_p) == NULL);
+    LU_ASSERT(elem_p == elem_added);
+    LU_ASSERT_STR_EQ("After 1", elem_p->str);
+    LU_ASSERT(clist_get_next(tested_clist, elem_p) == NULL);
 }
 
-MU_TEST(test_clist_add_last)
+LU_TEST(test_suite_clistlib, test_clist_add_last)
 {
     test_struct_t *elem_p = NULL;
     test_struct_t *elem_get_p = NULL;
@@ -126,12 +128,12 @@ MU_TEST(test_clist_add_last)
     elem_get_p = clist_get_next(tested_clist,
                         clist_get_first(tested_clist));
     /* Check */
-    mu_check(elem_p != NULL);
-    mu_check(elem_get_p == elem_p);
-    mu_assert_string_eq("TestString", elem_get_p->str);
+    LU_ASSERT(elem_p != NULL);
+    LU_ASSERT(elem_get_p == elem_p);
+    LU_ASSERT_STR_EQ("TestString", elem_get_p->str);
 }
 
-MU_TEST(test_clist_get_next)
+LU_TEST(test_suite_clistlib, test_clist_get_next)
 {
     test_struct_t *elem_p = NULL;
     test_struct_t *elem_get_p = NULL;
@@ -154,13 +156,13 @@ MU_TEST(test_clist_get_next)
     /* Check */
     for (idx = 1; idx <= 5; idx++)
     {
-        mu_check(elem_get_p != NULL);
-        mu_check(elem_get_p->b == idx);
+        LU_ASSERT(elem_get_p != NULL);
+        LU_ASSERT(elem_get_p->b == idx);
         elem_get_p = clist_get_next(tested_clist, elem_get_p);
     }
 }
 
-MU_TEST(test_clist_get_prev)
+LU_TEST(test_suite_clistlib, test_clist_get_prev)
 {
     test_struct_t *elem_p = NULL;
     test_struct_t *elem_get_p = NULL;
@@ -183,13 +185,13 @@ MU_TEST(test_clist_get_prev)
     /* Check */
     for (idx = 5; idx >= 1; idx--)
     {
-        mu_check(elem_get_p != NULL);
-        mu_check(elem_get_p->b == idx);
+        LU_ASSERT(elem_get_p != NULL);
+        LU_ASSERT(elem_get_p->b == idx);
         elem_get_p = clist_get_prev(tested_clist, elem_get_p);
     }
 }
 
-MU_TEST(test_clist_get_last)
+LU_TEST(test_suite_clistlib, test_clist_get_last)
 {
     test_struct_t *elem_p = NULL;
     test_struct_t *elem_get_p = NULL;
@@ -204,13 +206,13 @@ MU_TEST(test_clist_get_last)
     /* When */
     elem_get_p = clist_get_last(tested_clist);
     /* Check */
-    mu_check(elem_p != NULL);
-    mu_check(elem_get_p == elem_p);
-    mu_assert_string_eq("TestString", elem_get_p->str);
+    LU_ASSERT(elem_p != NULL);
+    LU_ASSERT(elem_get_p == elem_p);
+    LU_ASSERT_STR_EQ("TestString", elem_get_p->str);
 }
 
 
-MU_TEST(test_clist_remove_first)
+LU_TEST(test_suite_clistlib, test_clist_remove_first)
 {
     test_struct_t *elem_p = NULL;
     test_struct_t *elem_get_p = NULL;
@@ -225,11 +227,11 @@ MU_TEST(test_clist_remove_first)
     clist_remove(tested_clist, elem_p);
     /* Check */
     elem_get_p = clist_get_first(tested_clist);
-    mu_check(elem_get_p != NULL);
-    mu_assert_string_eq("Elem1", elem_get_p->str);
+    LU_ASSERT(elem_get_p != NULL);
+    LU_ASSERT_STR_EQ("Elem1", elem_get_p->str);
 }
 
-MU_TEST(test_clist_remove_tail)
+LU_TEST(test_suite_clistlib, test_clist_remove_tail)
 {
     test_struct_t *elem_1 = NULL;
     test_struct_t *elem_2 = NULL;
@@ -244,12 +246,12 @@ MU_TEST(test_clist_remove_tail)
     clist_remove(tested_clist, elem_1);
     /* Check */
     elem_get_p = clist_get_first(tested_clist);
-    mu_check(elem_get_p != NULL);
-    mu_check(clist_get_next(tested_clist, elem_get_p) == NULL);
-    mu_assert_string_eq("Elem2", elem_get_p->str);
+    LU_ASSERT(elem_get_p != NULL);
+    LU_ASSERT(clist_get_next(tested_clist, elem_get_p) == NULL);
+    LU_ASSERT_STR_EQ("Elem2", elem_get_p->str);
 }
 
-MU_TEST(test_clist_remove_middle)
+LU_TEST(test_suite_clistlib, test_clist_remove_middle)
 {
     test_struct_t *elem_1 = NULL;
     test_struct_t *elem_2 = NULL;
@@ -265,11 +267,11 @@ MU_TEST(test_clist_remove_middle)
     clist_remove(tested_clist, elem_2);
     /* Check */
     elem_get_p = clist_get_first(tested_clist);
-    mu_check(elem_get_p == elem_3);
-    mu_check(clist_get_next(tested_clist, elem_get_p) == elem_1);
+    LU_ASSERT(elem_get_p == elem_3);
+    LU_ASSERT(clist_get_next(tested_clist, elem_get_p) == elem_1);
 }
 
-MU_TEST(test_clist_iterators)
+LU_TEST(test_suite_clistlib, test_clist_iterators)
 {
     test_struct_t *elem = NULL;
     char check_c;
@@ -293,21 +295,21 @@ MU_TEST(test_clist_iterators)
     nof_checks = 0;
     clist_iterate(tested_clist, elem)
     {
-        mu_check(elem->a == check_c);
+        LU_ASSERT(elem->a == check_c);
         check_c++;
         nof_checks++;
     }
-    mu_check(nof_checks == 4);
+    LU_ASSERT(nof_checks == 4);
     
     check_c = 'D';
     nof_checks = 0;
     clist_reverse_iterate(tested_clist, elem)
     {
-        mu_check(elem->a == check_c);
+        LU_ASSERT(elem->a == check_c);
         check_c--;
         nof_checks++;
     }
-    mu_check(nof_checks == 4);
+    LU_ASSERT(nof_checks == 4);
 }
 
 void test_struct_t_destroy(clist_elem_p element)
@@ -318,7 +320,7 @@ void test_struct_t_destroy(clist_elem_p element)
     concrete_elem->str = NULL;
 }
 
-MU_TEST(test_clist_custom_destructor)
+LU_TEST(test_suite_clistlib, test_clist_custom_destructor)
 {
     test_struct_t *elem;
     test_struct_t *elem_get;
@@ -339,40 +341,22 @@ MU_TEST(test_clist_custom_destructor)
 
     /* Check */
     elem_get = clist_get_first(tested_clist);
-    mu_assert_string_eq("Element1", elem_get->str);
+    LU_ASSERT_STR_EQ("Element1", elem_get->str);
     clist_remove(tested_clist, elem_get);
     elem_get = clist_get_first(tested_clist);
-    mu_assert_string_eq("Element2", elem_get->str);
+    LU_ASSERT_STR_EQ("Element2", elem_get->str);
     elem_get = clist_get_next(tested_clist, elem_get);
-    mu_assert_string_eq("Element3", elem_get->str);
+    LU_ASSERT_STR_EQ("Element3", elem_get->str);
     clist_free(tested_clist); /* Running this test with mem-leak
                                  framework (like valgrind) will
                                  detect issues with destructor */
     tested_clist = NULL;
 }
 
-MU_TEST_SUITE(test_suite)
-{
-    MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
-	MU_RUN_TEST(test_clist_create);
-	MU_RUN_TEST(test_clist_add_first);
-    MU_RUN_TEST(test_clist_add_multiple);
-    MU_RUN_TEST(test_clist_add_after);
-    MU_RUN_TEST(test_clist_add_last);
-    MU_RUN_TEST(test_clist_get_next);
-    MU_RUN_TEST(test_clist_get_prev);
-    MU_RUN_TEST(test_clist_get_last);
-    MU_RUN_TEST(test_clist_remove_first);
-    MU_RUN_TEST(test_clist_remove_tail);
-    MU_RUN_TEST(test_clist_remove_middle);
-    MU_RUN_TEST(test_clist_iterators);
-    MU_RUN_TEST(test_clist_custom_destructor);
-}
-
 int test_clistlib_suite_runner(void)
 {
     printf("\n\n~~ CListLib Tests:\n");
-    MU_RUN_SUITE(test_suite);
-    MU_REPORT();
-    return minunit_fail;
+    LU_SUITE_RUN(test_suite_clistlib);
+    LU_SUITE_REPORT(test_suite_clistlib);
+    return LU_SUITE_STATUS(test_suite_clistlib);
 }

@@ -38,12 +38,12 @@ $(CLIST_OBJ_DIR)/%.o: $(CLIST_SRC_DIR)/%.c $(CLIST_HDRS)
 
 TEST_BUILD_DIR = test/bin
 TEST_SRC_DIR = test/src
-TEST_LIB_DIR = test/minunit
+TEST_LIB_DIR = test/lightunit
 
 TEST_EXE = $(TEST_BUILD_DIR)/test_clist
 TEST_SRCS = $(shell find $(TEST_SRC_DIR) -iname "*.c")
 
-TEST_INCLUDES = $(CLIST_INCLUDE)  -I$(TEST_LIB_DIR)
+TEST_INCLUDES = $(CLIST_INCLUDE)  -I$(TEST_LIB_DIR) -Itest/minunit
 
 test: $(TEST_EXE)
 	$(TEST_EXE)
