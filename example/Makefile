@@ -4,7 +4,7 @@
 all: basic_example classic_example
 
 clean:
-	rm basic_example classic_example
+	rm -f basic_example classic_example
 
 basic_example: basic_example.c
 	@make -C ..
