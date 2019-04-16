@@ -2,6 +2,11 @@
 test/bin/
 out.txt
 
+# GCov
+*.gcov
+*.gcda
+*.gcno
+
 # Prerequisites
 *.d
 
