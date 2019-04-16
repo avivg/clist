@@ -1,4 +1,7 @@
-# clist     [![Build Status](https://travis-ci.org/avivg/clist.svg?branch=master)](https://travis-ci.org/avivg/clist)
+# clist
+[![Build Status](https://travis-ci.org/avivg/clist.svg?branch=master)](https://travis-ci.org/avivg/clist)
+[![codecov](https://codecov.io/gh/avivg/clist/branch/master/graph/badge.svg)](https://codecov.io/gh/avivg/clist)
+
 > Double Linked List, ansi-C implementation, with super simple interface.
 
 With this list, the user can ignore the internal management of head, tail, next, prev, etc. and consentrate on the data itself. The user only have it's own data structure pointers to deal with and no pesky shims or list constructs needs to be added to it.
