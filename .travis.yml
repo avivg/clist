@@ -9,3 +9,5 @@ script:
   - ./validate_example.sh
   - make cov
 
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
