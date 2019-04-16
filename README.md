@@ -3,22 +3,6 @@
 
 With this list, the user can ignore the internal management of head, tail, next, prev, etc. and consentrate on the data itself. The user only have it's own data structure pointers to deal with and no pesky shims or list constructs needs to be added to it.
 
-See [API](clistlib/include/clist.h)
-
-## Build
-To create a static library under `./clistlib/bin`:
-
-    make
-
-Run the tests (Will pull [minunit](https://github.com/siu/minunit)):
-
-    git submodule init
-    make test
-
-To run valgrind tests (assuming it's installed and in PATH):
-
-    make test_valg
-
 ## Usage
 
     #include <stdio.h>
@@ -58,6 +42,23 @@ Will result with:
 
 Updated code available in [basic example](example/basic_example.c)
 
+See [API](clistlib/include/clist.h)
+
+## Build
+To create a static library under `./clistlib/bin`:
+
+    make
+
+Run the tests (Will pull [minunit](https://github.com/siu/minunit)):
+
+    git submodule init
+    make test
+
+To run valgrind tests (assuming it's installed and in PATH):
+
+    make test_valg
+
+## More examples
 To implement the "classic" linked list, where the user can remove the objects from the list _without releasing them_, simply define the list managed object as a pointer to the user data and dereferece the returned values from the list api.
 See [classic example](example/classic_example.c)
 
