@@ -7,9 +7,11 @@ With this list, the user can ignore the internal management of head, tail, next,
 
     #include <stdio.h>
     #include <clist.h>
-
+    
+    /** This is the structure of an element in the list */
     typedef struct
     {
+        /** No need for any 'next', 'prev', etc. Only data */
         int x;
         int y;
     } point;
