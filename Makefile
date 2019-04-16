@@ -20,7 +20,7 @@ CLIST_INCLUDE = -I$(CLIST_HDRS_DIR)
 #
 all: $(CLIST_LIB)
 
-$(CLIST_LIB): CFLAGS = $(CFLAGS_BASE) -ansi
+$(CLIST_LIB): CFLAGS += $(CFLAGS_BASE) -ansi
 $(CLIST_LIB): $(CLIST_OBJS)
 	@mkdir -p $(@D)
 	ar rcs $@ $^
@@ -51,10 +51,14 @@ test: $(TEST_EXE)
 test_valg: $(TEST_EXE)
 	valgrind --leak-check=full --error-exitcode=2 $(TEST_EXE)
 
-$(TEST_EXE): CFLAGS = $(CFLAGS_BASE) -g  # Tests should be compiled without ansi
+$(TEST_EXE): CFLAGS += $(CFLAGS_BASE) -g  # Tests should be compiled without ansi
 $(TEST_EXE): $(TEST_SRCS) $(CLIST_HDRS) $(CLIST_LIB)
 	@mkdir -p $(@D)
 	$(CC)  -o $@  $(TEST_INCLUDES)  $(TEST_SRCS)  -L $(CLIST_BIN_DIR) -lclist  $(CFLAGS)
+
+cov: clean
+	make test CFLAGS='-O0 -coverage'
+	gcov $(CLIST_OBJS)
 
 #
 # Let's start over
