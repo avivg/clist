@@ -1,7 +1,6 @@
 #ifndef __CLIST_INTERNAL_H__
 #define __CLIST_INTERNAL_H__
 
-#include <stdint.h>  /* For uint8_t */
 #include <clist.h> /* Needed for some types */
 
 /*
@@ -30,8 +29,8 @@ struct clist_s
 
 #define TAG_SIZE                (sizeof(clist_element_tag_t))
 
-#define ELEMENT_TAG(__elem)     ( (clist_element_tag_t*)( ((uint8_t*)(__elem)) - TAG_SIZE) )
-#define TAG_ELEMENT(__tag)      ( (        clist_elem_p)( ((uint8_t*)(__tag )) + TAG_SIZE) )
+#define ELEMENT_TAG(__elem)     (((clist_element_tag_t*)(__elem)) - 1)
+#define TAG_ELEMENT(__tag)      ((clist_elem_p)(((clist_element_tag_t*)(__tag )) + 1))
 
 #define ELEMENT_NEXT(__elem)    (ELEMENT_TAG(__elem)->next)
 #define ELEMENT_PREV(__elem)    (ELEMENT_TAG(__elem)->prev)
